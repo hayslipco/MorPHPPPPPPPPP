@@ -1,0 +1,33 @@
+.symbol{
+  position: absolute;
+  width: 100px;
+  height: 100px;
+}
+
+.row1{
+  top: 10px;
+}
+
+.row2{
+  top: 130px;
+}
+
+.row3{
+  top: 260px;
+}
+
+.col1{
+  left: 590px;
+}
+
+.col2{
+  left: 710px;
+}
+
+.col3{
+  left: 840px;
+}
+
+body {
+  background-color: crimson;
+}
