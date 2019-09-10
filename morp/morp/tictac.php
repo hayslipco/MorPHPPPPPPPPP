@@ -14,7 +14,7 @@
 <?php
 
     //définition des carrés 
-    $cas0= $cas1= $cas2= $cas3= $cas4= $cas5= $cas6= $cas7= $cas8 = "00";
+    $cas0= $cas1= $cas2= $cas3= $cas4= $cas5= $cas6= $cas7= $cas8 = "";
     $cases = array($cas0, $cas1, $cas2, $cas3, $cas4, $cas5, $cas6, $cas7, $cas8);
 
     $turn = $lastPlay = $grind = '';
@@ -30,16 +30,17 @@
     $grind = $_COOKIE['tableGrind'];
     $arrayGrind = explode("/",$grind);
 
-    if(isset($_COOKIE['tableGrind']) && !$pageWasRefreshed){
+    if(isset($_COOKIE['tableGrind']) ){
         $turn = $_COOKIE['turnNb'];
         if(substr($arrayGrind[$lastPlay], -1)==4){
             $arrayGrind[$lastPlay] = $lastPlay.pairOrOdd($turn);
             $turn++;
             setcookie('turnNb',$turn,time() + 3600);
+            
         }
         $grind = implode("/",$arrayGrind);
         setcookie('tableGrind',$grind,time() + 3600);
-    }else if(!$pageWasRefreshed){
+    }else{
         $grind = "04/14/24/34/44/54/64/74/84";//4 == null 5 == cross 6 == round
         setcookie('tableGrind',$grind,time() + 3600);
         setcookie('turnNb',0,time() + 3600);
@@ -47,21 +48,18 @@
 
     //mise en place des images
     for($i = 0; $i < count($cases); $i++){
-        if(strlen($arrayGrind[$i]) > 1)
-        switch(substr($arrayGrind[$i], 1)){
+        switch(substr($arrayGrind[$i], -1)){
             case 4:
             $cases[$i] = "Images/white.png";
             break;
+
             case 5:
             $cases[$i] = "Images/Cross.jpg";
             break;
+            
             case 6:
             $cases[$i] = "Images/Round.jpg";
             break;
-            default:
-            $cases[$i] = "deffff";
-            break;
-
         }
     }
 
@@ -77,52 +75,20 @@
 </head>
 <body>
     <div align= "middle">
-        <img src="Images/emptyGrind.jpg" alt="Grille vide" usemap ="#yolo">
-        <map name = "yolo">
-        <area shape="rect" coords="0,0,105,105" alt="cas00" href="tictac.php?id=0">
-        <area shape="rect" coords="107,0,220,105" alt="cas01" href="tictac.php?id=1">
-        <area shape="rect" coords="215,0,335,105" alt="cas02" href="tictac.php?id=2">
+        <img src="Images/emptyGrind.jpg" alt="Grille vide">
 
-        <area shape="rect" coords="0,110,105,235" alt="cas10" href="tictac.php?id=3">
-        <area shape="rect" coords="107,110,220,235" alt="cas11" href="tictac.php?id=4">
-        <area shape="rect" coords="215,110,335,235" alt="cas12" href="tictac.php?id=5">
-
-        <area shape="rect" coords="0,220,105,360" alt="cas20" href="tictac.php?id=6">
-        <area shape="rect" coords="107,220,220,360" alt="cas21" href="tictac.php?id=7">
-        <area shape="rect" coords="215,220,335,360" alt="cas22" href="tictac.php?id=8">
-        
         <form action="<?=$_SERVER['PHP_SELF'];?>" method="post">
         <input type="submit" name="select" value="Reset">
         </form>
-        <a href="tictac.php?id=0">
-            <img src="<?php echo $cases[0]; ?>" alt="" class="symbol row1 col1"/>
-        </a>
-        <a href="tictac.php?id=1">
-            <img src="<?php echo $cases[1]; ?>" alt="" class="symbol row1 col2"/>
-        </a>
-        <a href="tictac.php?id=2">
-            <img src="<?php echo $cases[2]; ?>" alt="" class="symbol row1 col3"/>
-        </a>
-
-        <a href="tictac.php?id=3">
-            <img src="<?php echo $cases[3] ?>" alt="" class="symbol row2 col1"/>
-        </a>
-        <a href="tictac.php?id=4">
-            <img src="<?php echo $cases[4] ?>" alt="" class="symbol row2 col2"/>
-        </a>
-        <a href="tictac.php?id=5">
-            <img src="<?php echo $cases[5] ?>" alt="" class="symbol row2 col3"/>
-        </a>
-
-        <a href="tictac.php?id=6">
-            <img src="<?php echo $cases[6] ?>" alt="" class="symbol row3 col1"/>
-        </a>
-        <a href="tictac.php?id=7">
-            <img src="<?php echo $cases[7] ?>" alt="" class="symbol row3 col2"/>
-        </a>
-        <a href="tictac.php?id=8">
-            <img src="<?php echo $cases[8] ?>" alt="" class="symbol row3 col3"/>
-        </a>
+        <?php 
+        $war=0;
+        for($k = 1;$k <= 3;$k++){
+            for($l = 1; $l <= 3;$l++){
+                echo "<a href = \"tictac.php?id=$war\"> <img src=\"$cases[$war]\" class=\"symbol row$k col$l\"/></a>" ;
+                $war++;
+            }
+        }
+        ?>
     </div>
     <div>
         <p>
@@ -130,8 +96,7 @@
                 echo $lastPlay."<br>";
                 echo $turn."<br>";
                 echo $grind."<br>";
-                //vérification de victoire
-
+                echo count($cases) . "<br>";
             ?>
         </p>
     </div>
