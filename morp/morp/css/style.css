@@ -17,15 +17,15 @@
 }
 
 .col1{
-  left: 590px;
+  margin-left: -177px;
 }
 
 .col2{
-  left: 710px;
+  margin-left: -55px;
 }
 
 .col3{
-  left: 840px;
+  margin-left: 76px;
 }
 
 body {
