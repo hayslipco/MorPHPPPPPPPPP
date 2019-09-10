@@ -27,6 +27,7 @@
         else
             return 6;
     }
+    //mise en place du tableau de jeu
     $grind = $_COOKIE['tableGrind'];
     $arrayGrind = explode("/",$grind);
 
@@ -41,9 +42,10 @@
         $grind = implode("/",$arrayGrind);
         setcookie('tableGrind',$grind,time() + 3600);
     }else{
-        $grind = "04/14/24/34/44/54/64/74/84";//4 == null 5 == cross 6 == round
+        $grind = "04/14/24/34/44/54/64/74/84";//4 == null 6 == cross 5 == round
         setcookie('tableGrind',$grind,time() + 3600);
         setcookie('turnNb',0,time() + 3600);
+        $arrayGrind = explode("/", $grind);
     }
 
     //mise en place des images
@@ -53,14 +55,22 @@
             $cases[$i] = "Images/white.png";
             break;
 
-            case 5:
+            case 6:
             $cases[$i] = "Images/Cross.jpg";
             break;
             
-            case 6:
+            case 5:
             $cases[$i] = "Images/Round.jpg";
             break;
         }
+    }
+
+    //vérification de la victoire
+    if($_COOKIE['turnNb'] >= 5){
+        
+
+
+
     }
 
 ?>
@@ -75,10 +85,10 @@
 </head>
 <body>
     <div align= "middle">
-        <img src="Images/emptyGrind.jpg" alt="Grille vide">
+        <!--<img src="Images/emptyGrind.jpg" alt="Grille vide">-->
 
         <form action="<?=$_SERVER['PHP_SELF'];?>" method="post">
-        <input type="submit" name="select" value="Reset">
+        <input type="submit" name="select" value="Reset" class="resetButt">
         </form>
         <?php 
         $war=0;

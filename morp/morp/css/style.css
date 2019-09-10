@@ -13,19 +13,23 @@
 }
 
 .row3{
-  top: 260px;
+  top: 250px;
 }
 
 .col1{
-  margin-left: -177px;
+  margin-left: -170px;
 }
 
 .col2{
-  margin-left: -55px;
+  margin-left: -50px;
 }
 
 .col3{
-  margin-left: 76px;
+  margin-left: 70px;
+}
+
+.resetButt{
+  margin-top: 360px;
 }
 
 body {
