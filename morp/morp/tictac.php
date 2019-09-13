@@ -177,9 +177,6 @@ if ($_COOKIE['turnNb'] >= 4) {
     $victory = CheckVictory($lastPlay, $cleanGrind);
  }
 
-
-
-
 ?>
             <!DOCTYPE html>
             <html lang="fr">
@@ -203,7 +200,12 @@ if ($_COOKIE['turnNb'] >= 4) {
                     $war = 0;
                     for ($k = 1; $k <= 3; $k++) {
                         for ($l = 1; $l <= 3; $l++) {
-                            echo "<a href = \"tictac.php?id=$war\"> <img src=\"$cases[$war]\" class=\"symbol row$k col$l\"/></a>";
+                            echo "<a ";
+                            //rendre les cases clickables jusqu'à ce que quelqu'un gagne
+                            if(!$victory){
+                                echo "href = \"tictac.php?id=$war\"";
+                            }
+                            echo "> <img src=\"$cases[$war]\" class=\"symbol row$k col$l\"/></a>";
                             $war++;
                         }
                     }
