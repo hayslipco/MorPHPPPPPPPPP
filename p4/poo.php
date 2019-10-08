@@ -85,10 +85,15 @@ class Grid
     {
         $colorCode = 0;
         $x = $token->getX();
-        $y = $token->getY();
+        $y = 0;
+        for($i = 0;$i < $this->height;$i++){
+            if($this->gameGrid[$i][$x] != 0 || $i == $this->height-1){
+                $y = $i-1;
+                break;
+            }
+        }
 
         if($x <= $this->width && $y <= $this->height){
-
         switch($token->getColor()){
             case 'Green':
                 $colorCode = 1;
@@ -99,9 +104,7 @@ class Grid
             default:
                 $colorCode = 0;
         }
-
         $this->gameGrid[$y][$x] = $colorCode;
-        
         } else{
             echo "like what ? OOB";
         }
@@ -109,12 +112,14 @@ class Grid
 
     public function printGrid()
     {
+        $num = 0;
         foreach($this->gameGrid as $line){
             foreach($line as $tile){
                 echo "| $tile |";
             }
 
-            echo "<br>";
+            $num++;
+            echo "$num<br>";
         }
     }
     
@@ -134,14 +139,14 @@ class Grid
     <?php
         $grid = new Grid(8,8);
         $clicks = array();
-        $clicks[] = new Token('Green',0,7);
-        $clicks[] = new Token('Blue',1,6);
+        $clicks[] = new Token('Green',1,6);
+        $clicks[] = new Token('Blue',0,6);
         $clicks[] = new Token('Green',2,5);
-        $clicks[] = new Token('Blue',3,7);
-        $clicks[] = new Token('Green',4,7);
-        $clicks[] = new Token('Blue',5,7);
-        $clicks[] = new Token('Green',6,7);
-        $clicks[] = new Token('Blue',7,7);
+        $clicks[] = new Token('Blue',3,4);
+        $clicks[] = new Token('Green',4,3);
+        $clicks[] = new Token('Blue',5,2);
+        $clicks[] = new Token('Green',6,1);
+        $clicks[] = new Token('Blue',7,0);
         foreach($clicks as $token){
             $grid->placeToken($token);
 
