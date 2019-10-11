@@ -1,4 +1,6 @@
 <?php
+session_start();
+$_SESSION['played'] = false;
 class Token
 {
 
@@ -17,7 +19,6 @@ class Token
     {
         $this->setColor($color);
         $this->X = $X;
-        
     }
 
     /**
@@ -97,101 +98,119 @@ class Grid
         $colorCode = 0;
         $x = $token->getX();
         $y = 0;
-<<<<<<< HEAD
-        for($i = 0;$i < $this->height;$i++){
-            if($this->gameGrid[$i][$x] != 0 || $i == $this->height-1){
-                $y = $i-1;
-=======
 
         //Check de la colonne + placement de Y
-        for($i = 0;$i < $this->height;$i++){
-            if($this->gameGrid[$i][$x] != 0 || $i == $this->height-1){
-                if($i == $this->height-1 && $this->gameGrid[$i][$x] == 0)
+        for ($i = 0; $i < $this->height; $i++) {
+            if ($this->gameGrid[$i][$x] != 0 || $i == $this->height - 1 && $x <= $this->width && $y <= $this->height) {
+                if ($i == $this->height - 1 && $this->gameGrid[$i][$x] == 0)
                     $y = $i;
                 else
-                    $y = $i-1;
+                    $y = $i - 1;
+
                 $token->setY($y);
->>>>>>> master
                 break;
+            } else {
+                $y = null;
             }
         }
 
-        if($x <= $this->width && $y <= $this->height){
-        switch($token->getColor()){
-            case 'Green':
-                $colorCode = 1;
-                break;
-            case 'Blue':
-                $colorCode = 2;
-                break;
-            default:
-                $colorCode = 0;
-        }
-        $this->gameGrid[$y][$x] = $colorCode;
-        } else{
-            echo "like what ? OOB";
+        if ($x <= $this->width && $y <= $this->height && $y >= 0) {
+            switch ($token->getColor()) {
+                case 'Green':
+                    $colorCode = 1;
+                    break;
+                case 'Blue':
+                    $colorCode = 2;
+                    break;
+                default:
+                    $colorCode = 0;
+            }
+            $this->gameGrid[$y][$x] = $colorCode;
+            $_SESSION['played'] = true;
         }
     }
 
-    public function printGrid()
+    /*public function printGrid()
     {
-        $num = 0;
         foreach($this->gameGrid as $line){
             foreach($line as $tile){
                 echo "| $tile |";
             }
+            echo "<br>";
+        }
+    } */
 
-            $num++;
-            echo "$num<br>";
+    public function printGrid()
+    {
+        foreach ($this->gameGrid as $line) {
+            foreach ($line as $tile) {
+                echo '<img src="images/Token' . $tile . '.jpg" alt="Token" style="width:50px;height:50px;">';
+            }
+            echo "<br>";
         }
     }
-    
+
+    public function setButtons()
+    {
+        echo '<form action="" method="get">';
+        for ($i = 0; $i < count($this->gameGrid[0]); $i++) {
+            echo '<input type="submit" value="' . $i . '" name="input" style="width:50px;height:50px;">';
+        }
+        echo '                                             <input type="submit" value="Reset" name="reset" style="width:50px;height:50px;">';
+        echo '</form>';
+    }
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="fr">
+    <!DOCTYPE html>
+    <html lang="fr">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sale</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sale</title>
+    </head>
 
-<body style="margin:2%;">
-    <?php
-        $grid = new Grid(8,8);
-        $clicks = array();
-<<<<<<< HEAD
-        $clicks[] = new Token('Green',1,6);
-        $clicks[] = new Token('Blue',0,6);
-        $clicks[] = new Token('Green',2,5);
-        $clicks[] = new Token('Blue',3,4);
-        $clicks[] = new Token('Green',4,3);
-        $clicks[] = new Token('Blue',5,2);
-        $clicks[] = new Token('Green',6,1);
-        $clicks[] = new Token('Blue',7,0);
-=======
-        $clicks[] = new Token('Green',0);
-        $clicks[] = new Token('Blue',0);
-        $clicks[] = new Token('Green',0);
-        $clicks[] = new Token('Blue',1);
-        $clicks[] = new Token('Green',4);
-        $clicks[] = new Token('Blue',5);
-        $clicks[] = new Token('Green',6);
-        $clicks[] = new Token('Blue',7);
->>>>>>> master
-        foreach($clicks as $token){
-            $grid->placeToken($token);
+    <body style="margin:2%;">
+        <?php
 
+        if (isset($_GET['reset'])) {
+            session_destroy();
+        }
+
+        if (isset($_SESSION['grid']) && !isset($_GET['reset'])) {
+            $grid = $_SESSION['grid'];
+        } else {
+            $grid = new Grid(8, 8);
+        }
+
+        if (isset($_SESSION['turn'])) {
+            $turn = $_SESSION['turn'];
+        } else {
+            $turn = 'Green';
+        }
+
+        $grid->setButtons();
+
+        if (isset($_GET['input'])) {
+            $grid->placeToken(new Token($turn, $_GET['input']));
         }
         $grid->printGrid();
 
-        for($o = 0; $o < 8;$o++){
-            echo "";
+        if ($_SESSION['played']) {
+            if ($turn == 'Green') {
+                $_SESSION['turn'] = 'Blue';
+            } else {
+                $_SESSION['turn'] = 'Green';
+            }
         }
-    ?>
-    <!--<img src="" alt="">-->
-</body>
 
-</html>
+        $_SESSION['grid'] = $grid;
+
+
+
+        ?>
+        <!--<img src="" alt="">-->
+    </body>
+
+    </html>
