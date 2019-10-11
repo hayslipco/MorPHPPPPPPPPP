@@ -13,11 +13,11 @@ class Token
      * @param $X
      * @param $Y
      */
-    function __construct($color, $X, $Y)
+    function __construct($color, $X)
     {
         $this->setColor($color);
         $this->X = $X;
-        $this->Y = $Y;
+        
     }
 
     /**
@@ -44,6 +44,17 @@ class Token
     public function getX()
     {
         return $this->X;
+    }
+
+    /**
+     * definit le y des tokens
+     *
+     * @param $y
+     */
+    public function setY($y)
+    {
+
+        $this->Y = $y;
     }
 
     /**
@@ -86,9 +97,21 @@ class Grid
         $colorCode = 0;
         $x = $token->getX();
         $y = 0;
+<<<<<<< HEAD
         for($i = 0;$i < $this->height;$i++){
             if($this->gameGrid[$i][$x] != 0 || $i == $this->height-1){
                 $y = $i-1;
+=======
+
+        //Check de la colonne + placement de Y
+        for($i = 0;$i < $this->height;$i++){
+            if($this->gameGrid[$i][$x] != 0 || $i == $this->height-1){
+                if($i == $this->height-1 && $this->gameGrid[$i][$x] == 0)
+                    $y = $i;
+                else
+                    $y = $i-1;
+                $token->setY($y);
+>>>>>>> master
                 break;
             }
         }
@@ -139,6 +162,7 @@ class Grid
     <?php
         $grid = new Grid(8,8);
         $clicks = array();
+<<<<<<< HEAD
         $clicks[] = new Token('Green',1,6);
         $clicks[] = new Token('Blue',0,6);
         $clicks[] = new Token('Green',2,5);
@@ -147,6 +171,16 @@ class Grid
         $clicks[] = new Token('Blue',5,2);
         $clicks[] = new Token('Green',6,1);
         $clicks[] = new Token('Blue',7,0);
+=======
+        $clicks[] = new Token('Green',0);
+        $clicks[] = new Token('Blue',0);
+        $clicks[] = new Token('Green',0);
+        $clicks[] = new Token('Blue',1);
+        $clicks[] = new Token('Green',4);
+        $clicks[] = new Token('Blue',5);
+        $clicks[] = new Token('Green',6);
+        $clicks[] = new Token('Blue',7);
+>>>>>>> master
         foreach($clicks as $token){
             $grid->placeToken($token);
 
